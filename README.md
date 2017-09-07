@@ -1,6 +1,6 @@
 # DQN
 Python Tensorflow Implementation for Deep Q Network
-
+###### Currently a work in progress
 This repository focus on an implementation of [DQNs](https://storage.googleapis.com/deepmind-media/dqn/DQNNaturePaper.pdf) Mnih et al. 2015
 
 ### How it works
