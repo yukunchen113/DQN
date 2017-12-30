@@ -1,0 +1,23 @@
+params = {
+	'batch_size':128, #batch_size
+	'target_update':10000, #number of iterations until target q update (C)
+	'game_name':'Breakout-v0',# name of game environment
+	'input_size':[84,84], #resize images to this
+	'orig_inp':[210,160,3],# size of the original observation
+	'conv_layers':[[32,8,4],[64,4,2],[64,3,1]], #convolutional layer parameters [depth,k,s]
+	'FC_layer':512,#fully connected layer depth
+	'n_output':4,#number of possible actions to take
+	'replay_cap':100000,#amount of experience to store in replay
+	'rand_action':[1.0,0.1,1000000],#epsilon, probability of taking random action, linearly decreasing from a to b over c steps with [a,b,c]
+	'frame_skip':4,#number of frames to skip (k)
+	'frame_stack':4,#number of past frames to stack in sequence
+	'max_epi':10000000,#number of episodes to run
+	'disc_fact':0.99,#discount factor for target action value function
+	'replay_start':50000,#number of framess until replay starts
+	'opt_params':[0.00025,0.95,0.95,0.01],#learning rate, decay,momentum, epsilon
+	'main_dir':'/media/yukun/Barracuda Hard Drive 2TB/Data/DQN',#main directory for saving
+	'load_prev':True,#load previous model
+	'exp_file':'/media/yukun/Barracuda Hard Drive 2TB/Data/DQN/ModelExperience/experience.hdf5',
+	'use_ddqn':True
+
+}

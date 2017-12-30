@@ -1,15 +1,16 @@
 import tensorflow as tf 
 import numpy as np 
-import math
-import os
-
-def variable(name, shape, initializer, trainable=True, dtype = tf.float32):
-	with tf.device('/cpu:0'):
-		out = tf.get_variable(name,shape,dtype,initializer,trainable=trainable)
+import shutil, os, gym, math, random, h5py
+from PIL import Image
+def variable(name,shape,initializer,trainable=True, dtype=tf.float32):
+	#general variable for use of other functions, (for convienience)
+	with tf.device('/cpu:0'):#store all variable onto the cpu
+		out = tf.get_variable(name, shape,dtype,initializer,trainable=trainable)
+			#out gets the variable if it exists or initializes it with
+			#initializer if doesnt exist
 	return out
-
 def lrelu(input, const=0.2):
-	const = const.cast(const, input.dtype)
+	const = tf.cast(const, input.dtype)
 	return tf.maximum(input, tf.multiply(input,const))
 
 def batch_normalization(input,istrain,scope='batch_normalization',decay=0.999):
@@ -63,6 +64,7 @@ def fully_connected(input, n_out, scope='fully_connected', reshape = True):
 		return tf.nn.relu(out)
 
 def timer(total_seconds):
+	#returns a readable string format of time
 	ts = total_seconds%60
 	tm = (total_seconds/60)%60
 	th = (total_seconds/3600)%24
