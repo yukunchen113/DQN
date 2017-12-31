@@ -14,9 +14,6 @@ def train(params):
 	global_step = tf.contrib.framework.get_or_create_global_step()
 	#initialize model, environment and experience---------
 	env = md.Environment(params['frame_skip'],params['game_name'])
-	env2 = md.Environment(params['frame_skip'],params['game_name'])
-		#environment for actions performed by agent only, no random
-		#real evaluation of system
 	mod = md.DQN(params)
 	args=[
 		params['load_prev'],
@@ -69,7 +66,6 @@ def train(params):
 			mod.init_frame_stack()
 				#initialize frame stack
 			x1 = env.reset()#start the environment and get initial observation
-			env2.reset()#for evaluation purposes only
 			eps_run_time = time.time()#start the runtime of an episode
 			step_in_ep=0#steps passed in current episode
 			mod.add_frame(x1)#add initial observation into the stack
@@ -81,10 +77,6 @@ def train(params):
 					#get a random bool
 				experience_dict['state'],[experience_dict['action']]=sess.run([preprocess,action],feed_dict={frame_stack_ph:mod.get_stack(), israndom_ph:israndom_val}) 
 					#get state and action values
-				[evaluation_action] = sess.run(action,feed_dict={frame_stack_ph:mod.get_stack(), israndom_ph:False})
-					#evaluation action for evaluation purposes only
-				env2.run(evaluation_action)
-					#for evaluation purposes only
 				if mod.rand_act_prob>params['rand_action'][1]:
 					mod.rand_act_prob[0]-=mod.rand_act_prob[1]
 				new_unprocessed_state_val,experience_dict['reward'],experience_dict['done']=env.run(experience_dict['action'])
