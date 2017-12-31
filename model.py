@@ -233,7 +233,7 @@ class DQN():
 
 		out = tf.multiply(out, tf.cast(self.params['disc_fact'],tf.float32))
 		just_r_out = tf.cast(reward,tf.float32)
-		just_r_out = tf.clip_by_value(just_r_out,-1,1)
+		just_r_out = tf.sign(just_r_out)
 			#reward clipping
 		out = tf.add(out,just_r_out)
 		isdone = tf.cast(done,tf.bool)
