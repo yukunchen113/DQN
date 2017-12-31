@@ -248,11 +248,9 @@ class DQN():
 		logits = tf.diag_part(tf.gather(avf,action,axis=1))
 			#get the value from AVF, indexed by previous actions
 			#becomes of shape [batch_size]
-		out = tf.subtract(labels, logits)
-		out = tf.square(out)
+		out = tf.losses.huber_loss(labels,logits)
+			#get huber loss with clip at 1
 		out = tf.reduce_mean(out)
-		out = tf.clip_by_value(out,-1,1)
-			#L2 Loss with clip
 		return out
 	def switch_params(self):
 		avf_var = [var for var in tf.trainable_variables() if var.name.startswith('Action')]
@@ -262,7 +260,7 @@ class DQN():
 
 	def train(self,global_step,batch):
 		loss = self.compute_loss(batch)
-		lr,decay,mom,ep = self.params['opt_params']
+		lr,decay,mom,ep= self.params['opt_params']
 		optimizer = tf.train.RMSPropOptimizer(lr,decay,mom,ep).minimize(loss, global_step=global_step)
 		with tf.control_dependencies([optimizer]):
 			train_opt = tf.no_op(name='train')
